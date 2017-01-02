@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8" />
+<title>Courses Page</title>
+</head>
+<body>
+
+	<p><h1>LIST COURSES</h1></p>
+
+	<table>
+		<thead>
+			<tr>
+				<th>NAME</th>
+				<th>DESCRIPTION</th>
+				<th>PRICE</th>
+				<th>HOURS</th>
+				<th colspan="2">ACTION</th>
+			</tr>
+		</thead>
+		<tbody>
+			<!-- Verifica se uma lista esta vazia, utiliza-se o conceito de Expression Utility Objects -->
+			<tr th:if="${#lists.isEmpty(courses)}">
+				<td colspan="6" align="center"><h1>There are no courses!</h1></td>
+			</tr>
+			<tr th:unless="${#lists.isEmpty(courses)}" th:each="course : ${courses}">
+				<td><span th:text="${course.name}" /></td>
+				<td><span th:text="${course.description}" /></td>
+				<td><span th:text="${course.price}" /></td>
+				<td><span th:text="${course.hours}" /></td>
+				<td><a href="#" th:href="@{/courses/listallcourses?idcourse=__${course.id}__}">Edit Course</a></td>
+				<td><a href="#" th:href="@{/courses/removecourse?idcourse=__${course.id}__}">Remove Course</a></td>
+			</tr>
+		</tbody>
+	</table>
+	
+	<br />
+	
+	<hr />
+	
+	<p><h1>ADD OR UPDATE COURSE</h1></p>
+	
+	<form action="#" th:action="@{/courses/addcourse}" th:object="${course}" method="post">
+		<input type="hidden" th:field="*{id}" />
+		<p>NAME: <input type="text" th:field="*{name}" th:value="${name}" /></p>
+		<p th:if="${#fields.hasErrors('name')}" th:errors="*{name}" />
+		
+		<p>DESCRIPTION: <input type="text" th:field="*{description}" th:value="${description}" /></p>
+		<p th:if="${#fields.hasErrors('description')}" th:errors="*{description}" />
+		
+		<p>PRICE: <input type="number" th:field="*{price}" th:value="${price}" /></p>
+		<p th:if="${#fields.hasErrors('price')}" th:errors="*{price}" />
+		
+		<p>HOURS: <input type="number" th:field="*{hours}" th:value="${hours}" /></p>
+		<p th:if="${#fields.hasErrors('hours')}" th:errors="*{hours}" />
+		
+		<p><input type="submit" th:value="${addRemoveButtonLabel}" /></p>
+	</form>
+</body>
+</html>
